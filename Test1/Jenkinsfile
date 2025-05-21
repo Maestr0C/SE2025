@@ -61,6 +61,21 @@ pipeline {
             echo "[*] Archiving test results..."
             junit "${REPORT_DIR}/**/*.xml"
             archiveArtifacts artifacts: "${REPORT_DIR}/**/*", allowEmptyArchive: true
+
+            emailext (
+            subject: "[Jenkins] 테스트 결과 - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            body: """\
+테스트가 완료되었습니다.
+
+프로젝트: ${env.JOB_NAME}
+빌드번호: ${env.BUILD_NUMBER}
+상태: ${currentBuild.currentResult}
+결과 확인: ${env.BUILD_URL}console
+""",
+            to: "firelenze@gmail.com",
+            attachmentsPattern: "${REPORT_DIR}/test-output.txt",
+            compressAttachments: false
+        )
         }
 
         failure {
