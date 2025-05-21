@@ -74,7 +74,6 @@ pipeline {
 """,
             to: "firelenze@gmail.com",
             attachmentsPattern: "${REPORT_DIR}/test-output.txt",
-            compressAttachments: false
         )
         }
 
